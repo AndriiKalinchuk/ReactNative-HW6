@@ -1,14 +1,17 @@
+import { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  FlatList,
+  Image,
+  StyleSheet,
+  TextInput,
+  View,
+  Keyboard,
 } from "react-native";
-import { FlatList, Image, StyleSheet, Text, TextInput } from "react-native";
-import { View } from "react-native";
 import SvgArrowLeft from "../../assets/svg/SvgArrowLeft";
-import { useEffect, useState } from "react";
 import CommentItem from "../../components/CommentItem/CommentItem";
-import { Keyboard } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 
 const CommentsScreen = ({ navigation, route: { params } }) => {
@@ -102,19 +105,15 @@ export default CommentsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     paddingHorizontal: 16,
     paddingTop: 32,
-
     backgroundColor: "#fff",
   },
   postImg: {
     height: 240,
     width: "100%",
     marginBottom: 28,
-
     backgroundColor: "#f6f6f6",
-
     borderRadius: 8,
   },
   commentList: {
@@ -126,11 +125,8 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     height: 50,
-
     padding: 16,
-
     backgroundColor: "#f6f6f6",
-
     borderWidth: 1,
     borderColor: "#e8e8e8",
     borderRadius: 100,
@@ -139,19 +135,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 8,
     top: 7,
-
     paddingHorizontal: 6,
     paddingVertical: 6,
-
     backgroundColor: "#ff600c",
-
     borderRadius: 100,
   },
 
   svgArrow: {
     height: 10,
     width: 10,
-
     transform: [{ rotate: "90deg" }],
   },
 });

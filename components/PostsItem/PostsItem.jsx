@@ -1,7 +1,7 @@
-import SvgLocation from "../../assets/svg/SvgLocation";
-import SvgComment from "../../assets/svg/SvgComment";
 import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import SvgLocation from "../../assets/svg/SvgLocation";
+import SvgComment from "../../assets/svg/SvgComment";
 
 const PostsItem = ({ postImg, postName, postAddress, postLocation }) => {
   const navigation = useNavigation();
@@ -33,10 +33,6 @@ const PostsItem = ({ postImg, postName, postAddress, postLocation }) => {
 export default PostsItem;
 
 const styles = StyleSheet.create({
-  //post
-  // postsWrapper: {
-  //   paddingTop: 32,
-  // },
   postItem: {
     marginBottom: 32,
   },

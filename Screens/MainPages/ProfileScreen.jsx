@@ -1,12 +1,16 @@
-import { ImageBackground } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
-import { StyleSheet, View, Image, Text } from "react-native";
-
-import backgroundImg from "../../assets/img/background.jpg";
-import { TouchableOpacity } from "react-native";
-import SvgAddButton from "../../assets/svg/SvgAddButton";
-import { Dimensions } from "react-native";
 import { useState } from "react";
+import {
+  ImageBackground,
+  TouchableOpacity,
+  Dimensions,
+  StyleSheet,
+  View,
+  Image,
+  Text,
+} from "react-native";
+import * as DocumentPicker from "expo-document-picker";
+import backgroundImg from "../../assets/img/background.jpg";
+import SvgAddButton from "../../assets/svg/SvgAddButton";
 
 const ProfileScreen = () => {
   const [avatar, setAvatar] = useState(null);
@@ -48,17 +52,7 @@ const ProfileScreen = () => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // paddingHorizontal: 16,
-    // paddingVertical: 32,
-    // backgroundColor: '#fff',
-  },
-
   bgContainer: {
-    // flexDirection: 'row',
-    // alignItems: 'flex-start',
-
     resizeMode: "cover",
     justifyContent: "center",
     width: Dimensions.get("window").width,

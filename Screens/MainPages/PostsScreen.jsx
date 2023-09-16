@@ -82,7 +82,6 @@ const screenOptions = {
     fontWeight: "bold",
     fontSize: 17,
     lineHeight: 22,
-
     textAlign: "center",
   },
 };

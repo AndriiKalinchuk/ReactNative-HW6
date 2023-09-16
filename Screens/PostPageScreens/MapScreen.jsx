@@ -1,8 +1,8 @@
-import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { PROVIDER_GOOGLE } from "react-native-maps";
+import { useIsFocused } from "@react-navigation/native";
 
 const MapScreen = ({ route, navigation }) => {
   const isFocused = useIsFocused();

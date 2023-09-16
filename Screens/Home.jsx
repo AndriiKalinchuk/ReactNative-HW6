@@ -1,14 +1,14 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import PostScreen from "../MainPages/PostsScreen";
-import CreatePostsScreen from "../MainPages/CreatePostsScreen";
-import ProfileScreen from "../MainPages/ProfileScreen";
-import SvgArrowLeft from "../../assets/svg/SvgArrowLeft";
-import SvgLogOut from "../../assets/svg/SvgLogOut";
-import SvgGrid from "../../assets/svg/SvgGrid";
-import SvgPlus from "../../assets/svg/SvgPlus";
-import SvgUser from "../../assets/svg/SvgUser";
-import SvgTrash from "../../assets/svg/SvgTrash";
+import PostScreen from "./MainPages/PostsScreen";
+import CreatePostsScreen from "./MainPages/CreatePostsScreen";
+import ProfileScreen from "./MainPages/ProfileScreen";
+import SvgArrowLeft from "../assets/svg/SvgArrowLeft";
+import SvgLogOut from "../assets/svg/SvgLogOut";
+import SvgGrid from "../assets/svg/SvgGrid";
+import SvgPlus from "../assets/svg/SvgPlus";
+import SvgUser from "../assets/svg/SvgUser";
+import SvgTrash from "../assets/svg/SvgTrash";
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -90,7 +90,7 @@ const Home = () => {
       <BottomTabs.Screen
         name="Profile"
         component={ProfileScreen}
-        options={({ navigation, route }) => ({
+        options={({ navigation }) => ({
           ...createPostsOptions,
           headerShown: false,
           headerLeft: () => (

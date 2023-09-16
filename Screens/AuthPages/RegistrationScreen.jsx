@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
 
 import {
   View,
@@ -18,43 +17,79 @@ import {
 import backgroundImg from "../../assets/img/background.jpg";
 import SvgAddButton from "../../assets/svg/SvgAddButton";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { authSignUpUser } from "../../redux/auth/authOperations";
+import { authStateChange } from "../../redux/auth/authSlice";
+
+import { ImagePicker } from "expo";
 
 const RegistrationScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(null);
-  const [login, setLogin] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [login, setLogin] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isSecureText, setIsSecureText] = useState(true);
   const [currentFocused, setCurrentFocused] = useState("");
 
-  const clearUserForm = () => {
-    setLogin("");
-    setEmail("");
-    setPassword("");
-  };
+  const onSubmitUserRegister = async () => {
+    const photo = avatar
+      ? await uploadImageToServer(avatar, "avatars")
+      : "https://firebasestorage.googleapis.com/v0/b/first-react-native-proje-98226.appspot.com/o/userAvatars%2FDefault_pfp.svg.png?alt=media&token=7cafd3a4-f9a4-40f2-9115-9067f5a15f57";
 
-  const onSubmitUserRegister = () => {
-    if (!login || !email || !password)
-      return console.warn("Будь ласка заповніть поля");
-
-    console.log({ login, email, password, avatar });
-
-    handleKeyboardHide();
-    navigation.navigate("Home", { user: { login, email, password } });
-    clearUserForm();
+    dispatch(authSignUpUser({ photo, login, email, password })).then((data) => {
+      if (data === undefined || !data.uid) {
+        alert(`Реєстрацію не виконано!`);
+        return;
+      }
+      dispatch(authStateChange({ stateChange: true }));
+      console.log(data);
+    });
+    console.log({ login, email, password, photo });
   };
 
   const onLoadAvatar = async () => {
-    const avatarImg = await DocumentPicker.getDocumentAsync({
-      type: "image/*",
+    if (avatar && avatar.uri) {
+      setAvatar(null);
+      return;
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
     });
 
-    if (avatarImg.type === "cancel") return setAvatar(null);
+    if (!result.canceled) {
+      setAvatar(result.assets[0]);
+    }
+  };
 
-    setAvatar(avatarImg);
+  const uploadImageToServer = async (imageUri, prefixFolder) => {
+    const uniquePostId = Date.now().toString();
+
+    if (imageUri) {
+      try {
+        const response = await fetch(imageUri);
+
+        const file = await response.blob();
+
+        const imageRef = await ref(
+          myStorage,
+          `${prefixFolder}/${uniquePostId}`
+        );
+
+        await uploadBytes(imageRef, file);
+
+        const downloadURL = await getDownloadURL(imageRef);
+
+        return downloadURL;
+      } catch (error) {
+        console.warn("uploadImageToServer: ", error);
+      }
+    }
   };
 
   const handleFocus = (currentFocusInput = "") => {
@@ -77,10 +112,9 @@ const RegistrationScreen = () => {
         <ImageBackground source={backgroundImg} style={styles.bgContainer}>
           <View style={styles.contentWrapper}>
             <View style={styles.avatarWrapper}>
-              <Image
-                style={styles.avatar}
-                source={avatar ? { uri: avatar.uri } : null}
-              />
+              {avatar && avatar.uri && (
+                <Image style={styles.avatar} source={{ uri: avatar.uri }} />
+              )}
               <TouchableOpacity
                 style={avatar ? styles.btnAddAvatarLoad : styles.btnAddAvatar}
                 onPress={onLoadAvatar}

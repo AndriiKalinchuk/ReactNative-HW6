@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-
 import * as Location from "expo-location";
-
-import * as DocumentPicker from "expo-document-picker";
 import {
   Dimensions,
   Image,
   Keyboard,
   KeyboardAvoidingView,
   StyleSheet,
-} from "react-native";
-
-import {
   TouchableWithoutFeedback,
   TextInput,
   TouchableOpacity,
@@ -134,6 +127,7 @@ const CreatePostsScreen = () => {
   if (hasPermission === false) {
     return <Text> No access to camera</Text>;
   }
+
   return (
     <TouchableWithoutFeedback onPress={handleKeyboardHide}>
       <View
