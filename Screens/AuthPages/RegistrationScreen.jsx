@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { authSignUpUser } from "../../redux/auth/authOperations";
 import { authStateChange } from "../../redux/auth/authSlice";
 
-import { ImagePicker } from "expo";
+import * as ImagePicker from "expo-image-picker";
 
 const RegistrationScreen = () => {
   const navigation = useNavigation();
@@ -41,13 +41,13 @@ const RegistrationScreen = () => {
 
     dispatch(authSignUpUser({ photo, login, email, password })).then((data) => {
       if (data === undefined || !data.uid) {
+        console.log(data);
         alert(`Реєстрацію не виконано!`);
         return;
       }
       dispatch(authStateChange({ stateChange: true }));
-      console.log(data);
     });
-    console.log({ login, email, password, photo });
+    // console.log({ login, email, password, photo });
   };
 
   const onLoadAvatar = async () => {
