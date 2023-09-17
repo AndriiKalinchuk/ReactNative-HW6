@@ -47,7 +47,7 @@ const RegistrationScreen = () => {
       }
       dispatch(authStateChange({ stateChange: true }));
     });
-    // console.log({ login, email, password, photo });
+    console.log({ login, email, password, photo });
   };
 
   const onLoadAvatar = async () => {

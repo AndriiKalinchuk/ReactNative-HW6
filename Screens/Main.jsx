@@ -43,6 +43,7 @@ const Main = () => {
           screenOptions={{ headerShown: false }}
         >
           <MainStack.Screen name="Home" component={Home} />
+          <MainStack.Screen name="Login" component={LoginScreen} />
         </MainStack.Navigator>
       )}
     </NavigationContainer>

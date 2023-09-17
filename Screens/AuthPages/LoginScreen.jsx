@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 import backgroundImg from "../../assets/img/background.jpg";
-import { logIn } from "../../redux/auth/authOperations";
+import { authSignInUser } from "../../redux/auth/authOperations";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -37,7 +37,7 @@ const LoginScreen = () => {
     if (!email.trim() || !password.trim())
       return console.warn("Будь ласка заповніть поля");
 
-    dispatch(logIn(email, password));
+    dispatch(authSignInUser(email, password));
     console.log({ email, password });
 
     handleKeyboardHide();
