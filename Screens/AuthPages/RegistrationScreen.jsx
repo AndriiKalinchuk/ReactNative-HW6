@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { Dimensions, StyleSheet } from "react-native";
-
+import React, { useState, useEffect } from "react";
+import { Dimensions, StyleSheet, Keyboard, Platform } from "react-native";
 import {
   View,
   ImageBackground,
@@ -9,48 +8,71 @@ import {
   TextInput,
   Text,
   KeyboardAvoidingView,
-  Platform,
-  Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-
 import backgroundImg from "../../assets/img/background.jpg";
 import SvgAddButton from "../../assets/svg/SvgAddButton";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { authSignUpUser } from "../../redux/auth/authOperations";
 import { authStateChange } from "../../redux/auth/authSlice";
-
 import * as ImagePicker from "expo-image-picker";
-
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
 const RegistrationScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(null);
-  const [login, setLogin] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isSecureText, setIsSecureText] = useState(true);
   const [currentFocused, setCurrentFocused] = useState("");
 
-  const onSubmitUserRegister = async () => {
-    const photo = avatar
-      ? await uploadImageToServer(avatar, "avatars")
-      : "https://firebasestorage.googleapis.com/v0/b/first-react-native-proje-98226.appspot.com/o/userAvatars%2FDefault_pfp.svg.png?alt=media&token=7cafd3a4-f9a4-40f2-9115-9067f5a15f57";
+  useEffect(() => {
+    (async () => {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("Дозвольте доступ до галереї для завантаження фотографій.");
+      }
+    })();
+  }, []);
 
-    dispatch(authSignUpUser({ photo, login, email, password })).then((data) => {
-      if (data === undefined || !data.uid) {
-        console.log(data);
-        alert(`Реєстрацію не виконано!`);
+  const onSubmitUserRegister = async () => {
+    if (!login || !email || !password) {
+      alert("Будь ласка, заповніть всі поля.");
+      return;
+    }
+
+    try {
+      const photoId = avatar
+        ? await uploadImageToServer(avatar, "avatars")
+        : "https://firebasestorage.googleapis.com/v0/b/reactnativehw-399015.appspot.com/o/Default_pfp.svg.png?alt=media&token=4f64fea5-d586-44f7-8a72-2fde0e66dfd8";
+
+      const imageUrl = await getPhotoUrlFromFirestore(photoId);
+      if (!imageUrl) {
+        alert("Помилка отримання URL-адреси фотографії.");
         return;
       }
+
+      const user = { photo: imageUrl, login, email, password };
+      const data = await dispatch(authSignUpUser(user));
+
+      if (data === undefined || !data.uid) {
+        alert("Реєстрацію не виконано!");
+        return;
+      }
+
+      console.log({ login, email, password, photo: imageUrl.uri });
+
       dispatch(authStateChange({ stateChange: true }));
-    });
-    console.log({ login, email, password, photo });
+    } catch (error) {
+      console.error("Помилка реєстрації користувача: ", error);
+      alert("Помилка реєстрації користувача.");
+    }
   };
 
   const onLoadAvatar = async () => {
@@ -58,15 +80,21 @@ const RegistrationScreen = () => {
       setAvatar(null);
       return;
     }
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
 
-    if (!result.canceled) {
-      setAvatar(result.assets[0]);
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        setAvatar(result.assets[0]);
+      }
+    } catch (error) {
+      console.error("Помилка завантаження фотографії: ", error);
+      alert("Помилка завантаження фотографії.");
     }
   };
 
@@ -76,20 +104,36 @@ const RegistrationScreen = () => {
     if (imageUri) {
       try {
         const imagesCollection = collection(db, "images");
-
         const docRef = await addDoc(imagesCollection, {
           url: imageUri,
           prefixFolder: prefixFolder,
           timestamp: uniquePostId,
         });
         const imageId = docRef.id;
-        console.log("Image ID: ", imageId);
-
-        return docRef.id;
+        return imageId;
       } catch (error) {
-        console.error("Error adding image document: ", error);
+        console.error("Помилка додавання документа зображення: ", error);
         throw error;
       }
+    }
+  };
+
+  const getPhotoUrlFromFirestore = async (photoId) => {
+    try {
+      const photoDocRef = doc(db, "images", photoId);
+      const photoDocSnapshot = await getDoc(photoDocRef);
+
+      if (photoDocSnapshot.exists()) {
+        const photoData = photoDocSnapshot.data();
+        const photoUrl = photoData.url;
+        return photoUrl;
+      } else {
+        console.log("Документ з вказаним ID не існує.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Помилка отримання фото URL з Firestore: ", error);
+      throw error;
     }
   };
 
@@ -184,11 +228,11 @@ const RegistrationScreen = () => {
               />
               <TouchableOpacity
                 style={styles.btnPassShow}
-                onPress={() =>
-                  password !== "" && setIsSecureText((prevState) => !prevState)
-                }
+                onPress={() => setPassword((prev) => !prev)}
               >
-                <Text style={styles.btnPassShowText}>Показати</Text>
+                <Text style={styles.btnPassShowText}>
+                  {isSecureText ? "Показати" : "Приховати"}
+                </Text>
               </TouchableOpacity>
             </View>
 

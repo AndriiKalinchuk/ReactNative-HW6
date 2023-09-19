@@ -35,7 +35,7 @@ const ProfileScreen = () => {
         <View style={styles.contentWrapper}>
           <View style={styles.avatarWrapper}>
             {userAvatar ? (
-              <Image style={styles.avatar} source={{ uri: userAvatar }} /> // Відображення аватара з Redux
+              <Image style={styles.avatar} source={{ uri: userAvatar }} />
             ) : (
               <Text style={styles.avatarPlaceholder}>No Avatar</Text>
             )}

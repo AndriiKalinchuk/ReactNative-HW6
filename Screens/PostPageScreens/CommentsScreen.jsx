@@ -50,8 +50,10 @@ const CommentsScreen = ({ navigation, route: { params } }) => {
   }, [isFocused]);
 
   const handleAddComment = () => {
-    if (!commentText.trim())
-      return console.warn("Будь ласка напишіть коментар");
+    if (!commentText.trim()) {
+      console.warn("Будь ласка напишіть коментар");
+      return;
+    }
     const data = {
       authorAvatar: "",
       comment: commentText,
