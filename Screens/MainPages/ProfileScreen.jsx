@@ -34,11 +34,12 @@ const ProfileScreen = () => {
       <View style={styles.container}>
         <View style={styles.contentWrapper}>
           <View style={styles.avatarWrapper}>
-            {userAvatar ? (
-              <Image style={styles.avatar} source={{ uri: userAvatar }} />
-            ) : (
-              <Text style={styles.avatarPlaceholder}>No Avatar</Text>
-            )}
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: "https://firebasestorage.googleapis.com/v0/b/reactnativehw-399015.appspot.com/o/Default_pfp.svg.png?alt=media&token=4f64fea5-d586-44f7-8a72-2fde0e66dfd87",
+              }}
+            />
             <TouchableOpacity
               style={userAvatar ? styles.btnAddAvatarLoad : styles.btnAddAvatar}
               onPress={onLoadAvatar}

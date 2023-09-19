@@ -66,7 +66,7 @@ const RegistrationScreen = () => {
         return;
       }
 
-      console.log({ login, email, password, photo: imageUrl.uri });
+      console.log({ login, email, password, photo: imageUrl });
 
       dispatch(authStateChange({ stateChange: true }));
     } catch (error) {

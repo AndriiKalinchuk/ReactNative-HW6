@@ -18,7 +18,8 @@ const DefaultPostsScreen = ({ route }) => {
   const [posts, setPosts] = useState([
     {
       id: "123hjklkk3hnjjh",
-      postImg: "../../../assets/img/picture.jpg",
+      postImg:
+        "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FReactNativeHW-10dca6b2-42e9-43e7-a725-651b81c299f4/Camera/94b5e5c1-d57a-4650-a771-8c651edfef00.jpg",
       postName: "Picture",
       postAddress: "Лютіж",
       postLocation: { latitude: 50.6803954, longitude: 30.3832681 },
@@ -34,7 +35,12 @@ const DefaultPostsScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarWrapper}>
-        <Image style={styles.avatarImg} source={avatar} />
+        <Image
+          style={styles.avatarImg}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/reactnativehw-399015.appspot.com/o/Default_pfp.svg.png?alt=media&token=4f64fea5-d586-44f7-8a72-2fde0e66dfd87",
+          }}
+        />
         <View>
           <Text style={styles.avatarName}>{login}</Text>
           <Text style={styles.avatarEmail}>{email}</Text>
