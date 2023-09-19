@@ -46,7 +46,7 @@ export const authSignInUser =
   ({ login, email, password }) =>
   async (dispatch, state) => {
     try {
-      return await signInWithEmailAndPassword(login, email, password);
+      return await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       return error.code;
     }

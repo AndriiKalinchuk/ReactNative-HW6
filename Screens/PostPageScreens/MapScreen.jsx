@@ -15,10 +15,19 @@ const MapScreen = ({ route, navigation }) => {
         tabBarStyle: { display: "none" },
         headerShown: false,
       });
+    } else {
+      navigation?.getParent("home")?.setOptions({
+        tabBarStyle: {
+          alignItems: "center",
+          alignContent: "center",
+          justifyContent: "center",
+        },
+        headerShown: true,
+      });
     }
 
     if (route.params) setLocation(route.params.postLocation);
-  }, []);
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>

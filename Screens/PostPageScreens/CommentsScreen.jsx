@@ -37,8 +37,17 @@ const CommentsScreen = ({ navigation, route: { params } }) => {
         tabBarStyle: { display: "none" },
         headerShown: false,
       });
+    } else {
+      navigation?.getParent("home")?.setOptions({
+        tabBarStyle: {
+          alignItems: "center",
+          alignContent: "center",
+          justifyContent: "center",
+        },
+        headerShown: true,
+      });
     }
-  }, []);
+  }, [isFocused]);
 
   const handleAddComment = () => {
     if (!commentText.trim())

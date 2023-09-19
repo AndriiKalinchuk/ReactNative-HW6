@@ -1,19 +1,23 @@
-import { useState } from "react";
+import React from "react";
 import {
   ImageBackground,
-  TouchableOpacity,
-  Dimensions,
-  StyleSheet,
+  Text,
   View,
   Image,
-  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
+import { useSelector } from "react-redux";
+import { selectLogin, selectAvatar } from "../../redux/auth/authSelectors";
+
 import backgroundImg from "../../assets/img/background.jpg";
 import SvgAddButton from "../../assets/svg/SvgAddButton";
 
 const ProfileScreen = () => {
-  const [avatar, setAvatar] = useState(null);
+  const userName = useSelector(selectLogin);
+  const userAvatar = useSelector(selectAvatar);
 
   const onLoadAvatar = async () => {
     const avatarImg = await DocumentPicker.getDocumentAsync({
@@ -30,19 +34,25 @@ const ProfileScreen = () => {
       <View style={styles.container}>
         <View style={styles.contentWrapper}>
           <View style={styles.avatarWrapper}>
-            <Image style={styles.avatar} source={avatar} />
+            {userAvatar ? (
+              <Image style={styles.avatar} source={{ uri: userAvatar }} /> // Відображення аватара з Redux
+            ) : (
+              <Text style={styles.avatarPlaceholder}>No Avatar</Text>
+            )}
             <TouchableOpacity
-              style={avatar ? styles.btnAddAvatarLoad : styles.btnAddAvatar}
+              style={userAvatar ? styles.btnAddAvatarLoad : styles.btnAddAvatar}
               onPress={onLoadAvatar}
             >
               <SvgAddButton
                 style={
-                  avatar ? styles.btnAddAvatarSvgLoad : styles.btnAddAvatarSvg
+                  userAvatar
+                    ? styles.btnAddAvatarSvgLoad
+                    : styles.btnAddAvatarSvg
                 }
               />
             </TouchableOpacity>
           </View>
-          <Text style={{ ...styles.title, marginTop: 92 }}>Name</Text>
+          <Text style={{ ...styles.title, marginTop: 92 }}>{userName}</Text>
         </View>
       </View>
     </ImageBackground>
@@ -58,14 +68,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-
   contentWrapper: {
     paddingHorizontal: 16,
-
     width: "100%",
     height: "100%",
     marginTop: 247,
-
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -77,7 +84,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
-
     marginTop: 32,
     marginBottom: 32,
     color: "#212121",
@@ -86,10 +92,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -60,
     alignSelf: "center",
-
     width: 120,
     height: 120,
-
     backgroundColor: "#f6f6f6",
     borderRadius: 16,
   },
@@ -98,17 +102,22 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 16,
   },
+  avatarPlaceholder: {
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+    backgroundColor: "#bdbdbd",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   btnAddAvatar: {
     position: "absolute",
     bottom: 14,
     right: -12.5,
-
     alignItems: "center",
     alignContent: "center",
-
     width: 25,
     height: 25,
-
     color: "#ff6c00",
     backgroundColor: "#ffffff",
     borderRadius: 50,
@@ -117,17 +126,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 14,
     right: -12.5,
-
     alignItems: "center",
     alignContent: "center",
-
     width: 25,
     height: 25,
-
     color: "#ff6c00",
     backgroundColor: "#ffffff",
     borderRadius: 50,
-
     transform: [{ rotate: "45deg" }],
   },
   btnAddAvatarSvg: {

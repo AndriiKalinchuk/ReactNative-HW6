@@ -8,7 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet } from "react-native";
 
 import { authStateChangeUser } from "../redux/auth/authOperations";
-import { selectStateChange } from "../redux/auth/authSelections";
+import { selectStateChange } from "../redux/auth/authSelectors";
 
 import LoginScreen from "./AuthPages/LoginScreen";
 import RegistrationScreen from "./AuthPages/RegistrationScreen";
@@ -44,6 +44,7 @@ const Main = () => {
         >
           <MainStack.Screen name="Home" component={Home} />
           <MainStack.Screen name="Login" component={LoginScreen} />
+          {/* <MainStack.Screen name="Registration" component={RegistrationScreen}/> */}
         </MainStack.Navigator>
       )}
     </NavigationContainer>

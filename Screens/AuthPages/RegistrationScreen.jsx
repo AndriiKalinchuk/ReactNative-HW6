@@ -23,6 +23,9 @@ import { authStateChange } from "../../redux/auth/authSlice";
 
 import * as ImagePicker from "expo-image-picker";
 
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebase/config";
+
 const RegistrationScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -72,22 +75,20 @@ const RegistrationScreen = () => {
 
     if (imageUri) {
       try {
-        const response = await fetch(imageUri);
+        const imagesCollection = collection(db, "images");
 
-        const file = await response.blob();
+        const docRef = await addDoc(imagesCollection, {
+          url: imageUri,
+          prefixFolder: prefixFolder,
+          timestamp: uniquePostId,
+        });
+        const imageId = docRef.id;
+        console.log("Image ID: ", imageId);
 
-        const imageRef = await ref(
-          myStorage,
-          `${prefixFolder}/${uniquePostId}`
-        );
-
-        await uploadBytes(imageRef, file);
-
-        const downloadURL = await getDownloadURL(imageRef);
-
-        return downloadURL;
+        return docRef.id;
       } catch (error) {
-        console.warn("uploadImageToServer: ", error);
+        console.error("Error adding image document: ", error);
+        throw error;
       }
     }
   };

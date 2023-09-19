@@ -1,21 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Keyboard,
-  KeyboardAvoidingView,
-} from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import PostsItem from "../../components/PostsItem/PostsItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectAvatar,
   selectEmail,
   selectLogin,
-} from "../../redux/auth/authSelections";
+} from "../../redux/auth/authSelectors";
 
 const DefaultPostsScreen = ({ route }) => {
   const dispatch = useDispatch();
@@ -45,8 +36,8 @@ const DefaultPostsScreen = ({ route }) => {
       <View style={styles.avatarWrapper}>
         <Image style={styles.avatarImg} source={avatar} />
         <View>
-          <Text style={styles.avatarName}>Natali Romanova</Text>
-          <Text style={styles.avatarEmail}>email@example.com</Text>
+          <Text style={styles.avatarName}>{login}</Text>
+          <Text style={styles.avatarEmail}>{email}</Text>
         </View>
       </View>
       <FlatList

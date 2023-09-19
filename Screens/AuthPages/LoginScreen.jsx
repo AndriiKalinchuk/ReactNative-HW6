@@ -55,6 +55,9 @@ const LoginScreen = () => {
     setCurrentFocused("");
     Keyboard.dismiss();
   };
+  const navigateToRegistration = () => {
+    navigation.navigate("Registration");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={handleKeyboardHide}>
