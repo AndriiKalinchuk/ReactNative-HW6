@@ -48,11 +48,11 @@ const RegistrationScreen = () => {
     }
 
     try {
-      const photoId = avatar
+      const photo = avatar
         ? await uploadImageToServer(avatar, "avatars")
         : "https://firebasestorage.googleapis.com/v0/b/reactnativehw-399015.appspot.com/o/Default_pfp.svg.png?alt=media&token=4f64fea5-d586-44f7-8a72-2fde0e66dfd8";
 
-      const imageUrl = await getPhotoUrlFromFirestore(photoId);
+      const imageUrl = await getPhotoUrlFromFirestore(photo);
       if (!imageUrl) {
         alert("Помилка отримання URL-адреси фотографії.");
         return;
@@ -66,7 +66,7 @@ const RegistrationScreen = () => {
         return;
       }
 
-      console.log({ login, email, password, photo: imageUrl });
+      console.log({ login, email, password, photo });
 
       dispatch(authStateChange({ stateChange: true }));
     } catch (error) {
@@ -118,9 +118,9 @@ const RegistrationScreen = () => {
     }
   };
 
-  const getPhotoUrlFromFirestore = async (photoId) => {
+  const getPhotoUrlFromFirestore = async (photo) => {
     try {
-      const photoDocRef = doc(db, "images", photoId);
+      const photoDocRef = doc(db, "images", photo);
       const photoDocSnapshot = await getDoc(photoDocRef);
 
       if (photoDocSnapshot.exists()) {

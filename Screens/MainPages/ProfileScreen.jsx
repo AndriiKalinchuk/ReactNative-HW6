@@ -37,7 +37,7 @@ const ProfileScreen = () => {
             <Image
               style={styles.avatar}
               source={{
-                uri: "https://firebasestorage.googleapis.com/v0/b/reactnativehw-399015.appspot.com/o/Default_pfp.svg.png?alt=media&token=4f64fea5-d586-44f7-8a72-2fde0e66dfd87",
+                uri: "https://firebasestorage.googleapis.com/v0/b/reactnativehw-399015.appspot.com/o/photo_5212957044909394697_y.jpg?alt=media&token=46a3dc6d-88a7-4813-afa2-23c4aed7d43d",
               }}
             />
             <TouchableOpacity
