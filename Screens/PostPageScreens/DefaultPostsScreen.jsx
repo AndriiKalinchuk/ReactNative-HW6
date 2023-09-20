@@ -35,12 +35,7 @@ const DefaultPostsScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarWrapper}>
-        <Image
-          style={styles.avatarImg}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/reactnativehw-399015.appspot.com/o/photo_5212957044909394697_y.jpg?alt=media&token=46a3dc6d-88a7-4813-afa2-23c4aed7d43d",
-          }}
-        />
+        <Image style={styles.avatarImg} source={avatar} />
         <View>
           <Text style={styles.avatarName}>{login}</Text>
           <Text style={styles.avatarEmail}>{email}</Text>
