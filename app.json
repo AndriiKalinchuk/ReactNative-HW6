@@ -21,11 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.andriikalinchuk.ReactNativeHW"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "android.config.googleMaps.apiKey": "AIzaSyBUYOuKavd4afzh61KJN4aS_wnyVNCiFN8"
+    "android.config.googleMaps.apiKey": "AIzaSyBUYOuKavd4afzh61KJN4aS_wnyVNCiFN8",
+    "extra": {
+      "eas": {
+        "projectId": "53c7a810-d859-453c-a977-827607f0deb2"
+      }
+    }
   }
 }
